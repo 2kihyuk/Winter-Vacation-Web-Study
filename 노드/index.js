@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require("cors");
 const app = express()
 const port = 3000
+const { userRouter } = require("./src/router/userRouter");
 
 const{ indexRouter } =require("./src/router/indexRouter");
 
@@ -20,7 +21,7 @@ app.use(compression());
 
 //라우터 분리 
 indexRouter(app);
-
+userRouter(app);
 
 app.listen(port, () => {
   console.log(`Express app listening at port: ${port}`)
