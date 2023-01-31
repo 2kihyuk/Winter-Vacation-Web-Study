@@ -1,0 +1,1 @@
+exports.jwtSecret = "jwt-secret-1504";
