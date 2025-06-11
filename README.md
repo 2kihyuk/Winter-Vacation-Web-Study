@@ -119,7 +119,7 @@ class Person {
 
 안드로이드 스튜디오에서 PlantUML 플러그인을 설치하여 사용가능.
 
-'+'를 붙이면, public.
+'+'를 붙이면, public.     
 '-'를 붙이면, private.
 
 #### 프로퍼티(property)
@@ -140,15 +140,15 @@ public 멤버는 모든 클래스에서 접근 가능.
 - Map - 키(key)와 값(value)의 쌍으로 저장(키의 중복 불가)
 - Set - 순서가 없는 집합(중복 불가)
 
-#### List    
+#### List
 
 Dart에는 배열은 없고, List만 존재한다.
 
-List<String> list = ['홍길동', '한석봉'];
-final list2 = <String>['홍창기', '임찬규', '켈리'];
+List<String> list = ['홍길동', '한석봉'];      
+final list2 = <String>['홍창기', '임찬규', '켈리'];       
 
-list.add('이순신');
-list.remove('이순신');
+list.add('이순신');     
+list.remove('이순신');       
 
 #### List의 탐색 방법
 
@@ -156,31 +156,35 @@ list.remove('이순신');
 - for(final item in items)
 - forEach()
 
-
-#### Set 
+#### Set
 
 ```dart
-Set<int> set = {1,2,3};
-final lottoSet = <int>{1,2,3,4};
-final loSet = {1,2,3};
 
-set.add(6);
-set.remove(1);
+Set<int> set = {1, 2, 3};
+final lottoSet = <int>{1, 2, 3, 4};
+final loSet = {1, 2, 3};
 
-bool isContain = set.contains(2);
+set.add
+(6);set.remove(1);
+
+bool isContain = set.
+contains
+(
+2
+);
 ```
 
-#### Set 탑색 방법 - Iterator 프로퍼티
+#### Set 탐색 방법 - Iterator 프로퍼티
+
 ```dart
 
-final it = lottoSet.iterator;
-while(it.moveNext()){
-  print(it.current);
+final it = lottoSet.iterator;while(
+it.moveNext()){
+print(it.current);
 }
 ```
 
-
-#### Map 
+#### Map
 
 키(key)와 값(value) 쌍으로 저장.
 
@@ -191,8 +195,8 @@ while(it.moveNext()){
 ///entries 프로퍼티를 통해 Map 구조 탐색 가능. 
 
 person.entries.forEach((element) {
-    print(element.key);
-    print(element.value);
+print(element.key);
+print(element.value);
 });
 ```
 
