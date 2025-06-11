@@ -184,14 +184,15 @@ while(it.moveNext()){
 
 키(key)와 값(value) 쌍으로 저장.
 
+```dart
 - Map<String,String> person = {'name' : '오스틴' , 'team' : 'LG'};
 - Map<String,dynamic> pe = {'name' : '오스틴' , 'age' : '31'};
 
-entries 프로퍼티를 통해 Map 구조 탐색 가능. 
+///entries 프로퍼티를 통해 Map 구조 탐색 가능. 
 
 person.entries.forEach((element) {
     print(element.key);
     print(element.value);
 });
-
+```
 
