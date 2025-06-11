@@ -167,11 +167,8 @@ final loSet = {1, 2, 3};
 set.add
 (6);set.remove(1);
 
-bool isContain = set.
-contains
-(
-2
-);
+bool isContain = set.contains=(2);
+
 ```
 
 #### Set 탐색 방법 - Iterator 프로퍼티
