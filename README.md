@@ -1,80 +1,197 @@
 # TIL
 
-## 2025-06-05 - 클래스
+## 2025-06-11 - 캡슐화 와 컬렉션
 
 ### 과제리뷰
 
-코드 작성시에, 상수따로 변수따로 모아두는 습관을 기르자.    
-import할 때, as는 특별한 사유 없는 경우에는 사용하지 말자.
+static - 공유 자원    
+static const - 컴파일 타임에 상수로 결정이 되는 공유자원.
 
-테스트 코드 작성 시, 매직 넘버를 사용하기보다 상수로 만들어서 사용하자.
+변수명 앞에 _를 붙이면 , 접근 제어 (private)
 
-범위를 테스트 해야 할때는, 끝과 끝, 즉 범위를 테스트하자.    
-테스트를 할 때는 왜 이러한 테스트를 했는지에 대한 이유가 필요하다.
+#### 캡슐화
 
-코드 작성 시에, 일관성을 지키자.   
-띄어쓰기를 해보자.
+이제 클래스나 인스턴스를 활용하여 현실세계를 객체 지향 프로그램으로 자유롭게 개발할 수 있게 되었다.     
+하지만, 실수로 속성을 덮어쓰거나, 잘못된 조작등의 휴먼 에러를 완전히 없앨 수 없다.     
+그래서 Dart에서는 실수를 미연에 방지하기 위해 '캡슐화'를 사용한다.
 
-### 레퍼런스 타입과 참조
+#### 멤버에 대한 액세스 제어
 
-가상세계는 컴퓨터 안의 메모리 영역.    
-인스턴스는 힙 영역 안에 확보된 메모리.
+접근 지정자를 활용(access modifier)
 
-힙 영역은 동적 할당으로 인해 생기는 영역 -> 생성자를 통한 인스턴스 생성
+private    
+제한 범위 : 제한이 엄격함.    
+설정 방법 : 멤버 앞에 _ 붙이기.     
+접근 가능한 범위 : 자기 자신의 클래스.
 
-스택 영역은 지역 변수를 담는 공간이다.
+public    
+제한 범위 : 제한이 느슨함.   
+설정 방법 : 기본 값.     
+접근 가능한 범위 : 모든 클래스.
 
-힙 영역과 스택 영역은 모두 실행 중에 메모리를 할당하는 구간이다.
+```dart
+class Hero {
+  String name;
+  int _hp;
 
-hero라는 인스턴스 명으로 접근하지만 실제로는 메모리의 주소값이 담겨져 있고, 그 메모리 주소로 가서 접근한다.
--> 주소를 보고 따라가서 그 실체를 활용한다 -> 참조형
+  ///변수명 앞에 _ 를 붙여줌으로써, private처럼 지정.
+  Sword? sword = null;
 
-Dart 언어는 모든 타입이 레퍼런스(참조형)형으로 동작한다.
+  Hero({required this.name, required int hp}) : _hp = hp;
 
-### 생성자
+  void bye() {
+    print('빠이');
+  }
 
-생성자 인자의 앞뒤로 중괄호를 감싸면, 순서 상관 없이 인자를 지정할 수 있게 된다.      
-중괄호로 감싸지 않으면, 순서를 지켜야 하며 인자를 지정하지 않고 사용할 수 있다.
+  ///메소드명앞에도 _를 붙여줌으로써, private한 메소드.
+  void _die() {
+    print('죽기');
+  }
+}
+```
 
-생성자에 {}를 사용하면 그게 named parameter 이다.
-데이터 타입이 NULL을 허용하지 않으면 required를 붙여 줘야한다.
+변수에 _를 붙여서 private처럼 지정하면, 다른 클래스에서 해당 변수에 대한 접근이 불가능하다.
 
-필수 파라미터와 named parameter를 동시에 사용할 경우에는, 반드시 필수 파라미터가 앞에 와야한다.
+-> 어떻게 접근하나 그럼?
 
-또한 named parameter에서만 기본값을 지정해 줄 수 있다.
+- getter / setter 를 통해서 접근 및 조작.
 
-### 생성자 오버로드
+#### getter / setter
 
-오버로드는 이름이 같은 메소드나 생성자인데, 인자의 구성이 다른 것들.
+메소드를 경유한 필드 조작.
 
-어떤 언어이던, 모든 클래스는 반드시 1개 이상의 생성자를 가진다.      
-새로운 클래스를 만들면, 기본 생성자는 따로 작성하지 않아도 있다고 간주한다. 따로 생성자를 작성하지 않아도 인스턴스를 만들 수 있다.
+getter : 읽기 전용 프로퍼티를 조작할때 사용.    
+setter : 쓰기 전용 프로퍼티를 조작할때 사용.
 
-### static
+```dart
+class Hero {
+  static int money = 1000;
+  String name;
+  int _hp;
 
-static - 정적 키워드.    
-static을 붙이면, 다른 메모리 공간에 저장이 된다.    
-Hero클래스 내의 name변수와 static money변수는 어떤 관계가 있느냐? -> 아무 관계 없다..
+  int get hp => _hp; //getter
 
-static과 같은 효과를 내는 방법 : top level에 선언하면 된다. 어디에서든 끌어다 쓸 수 있는 공적 자원으로 만든다.    
-그런데, 의미 부여가 필요하다. 어디서 쓰는 변수인지를 알아보기 쉽게 하기 위해서 static 키워드를 사용하는 것이 좋다.
+}
+```
 
-중요한 것은, static을 사용하면 다른 메모리 공간에 저장된다는 것이고, 인스턴스를 만들지 않고 클래스 명을 통한 접근으로 사용할 수 있다.
+```dart
+class Person {
+  String _name;
+  int _age;
 
-### static 메소드
+  ///기본 생성자.
+  Person(this._name, this._age);
 
-static 메소드를 사용하면 클래스명을 통한 접근으로 사용할 수 있는 메소드가 된다.     
-같은 클래스 내에서의 static끼리는 클래스명을 통한 접근 없이도, 변수명 만으로도 접근이 가능하다.    
-다른 클래스의 static변수라면, 클래스명을 통한 접근을 해야한다.
+  ///간단한 getter
+  String get name => _name;
 
-그렇다면 어떤 경우에 static을 사용하느냐?     
-예를 들면, 히어로가 여러명이 파티를 맺어 공용자금을 사용하기 위해서     
-static int money = 1000;    
-을 통해 공용 자금 1000원을 사용할 수 있다.
+  int get age => _age;
 
-같은 클래스 내의 static 메소드안에서 클래스의 static변수가 아닌 변수에 대해 접근하기 위해서는, 생성자를 통해 인스턴스를 만들고, 인스턴스를 통해서 변수에 접근해야한다.  
+  ///간단한 setter
+  //set name(String value) => _name = value;
+  ///setter를 통해 유효성 검사.
+  set name(String value) {
+    if (value.length <= 1) {
+      throw Exception('이름이 너무 짧습니다.');
+    }
+    if (value.length >= 8) {
+      throw Exception('이름이 너무 깁니다.');
+    }
+    _name = value;
+  }
+
+  set age(int value) {
+    if (value >= 0) {
+      ///유효성 검사.
+      _age = value;
+    }
+  }
+}
+```
+
+#### getter / setter 의 메리트
+
+- Read Only / Write Only 필드의 실현
+- 필드의 이름, 클래스의 내부 설계를 자유롭게 변경 가능.
+- 필드로의 액세스를 검사 가능.
+
+#### 클래스 다이어그램
+
+안드로이드 스튜디오에서 PlantUML 플러그인을 설치하여 사용가능.
+
+'+'를 붙이면, public.
+'-'를 붙이면, private.
+
+#### 프로퍼티(property)
+
+getter / setter 메소드를 캡슐화하여 필드처럼 직접 접근할 수 있도록 하는 문법적 요소.
+
+#### 정리
+
+캡슐화를 하여 멤버나 클래스로의 접근을 제어할 수 있다.    
+특히, 필드에 '현실세계에서 불가능한 값'이 들어가지 않도록 제어.
+
+private 멤버는 동일 파일 내에서만 접근 가능.     
+public 멤버는 모든 클래스에서 접근 가능.
+
+### 컬렉션
+
+- List - 순서대로 요소들이 쌓여있는 구조(중복 허용)
+- Map - 키(key)와 값(value)의 쌍으로 저장(키의 중복 불가)
+- Set - 순서가 없는 집합(중복 불가)
+
+#### List    
+
+Dart에는 배열은 없고, List만 존재한다.
+
+List<String> list = ['홍길동', '한석봉'];
+final list2 = <String>['홍창기', '임찬규', '켈리'];
+
+list.add('이순신');
+list.remove('이순신');
+
+#### List의 탐색 방법
+
+- index를 통한 for문
+- for(final item in items)
+- forEach()
 
 
+#### Set 
 
+```dart
+Set<int> set = {1,2,3};
+final lottoSet = <int>{1,2,3,4};
+final loSet = {1,2,3};
+
+set.add(6);
+set.remove(1);
+
+bool isContain = set.contains(2);
+```
+
+#### Set 탑색 방법 - Iterator 프로퍼티
+```dart
+
+final it = lottoSet.iterator;
+while(it.moveNext()){
+  print(it.current);
+}
+```
+
+
+#### Map 
+
+키(key)와 값(value) 쌍으로 저장.
+
+- Map<String,String> person = {'name' : '오스틴' , 'team' : 'LG'};
+- Map<String,dynamic> pe = {'name' : '오스틴' , 'age' : '31'};
+
+entries 프로퍼티를 통해 Map 구조 탐색 가능. 
+
+person.entries.forEach((element) {
+    print(element.key);
+    print(element.value);
+});
 
 
