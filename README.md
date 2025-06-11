@@ -164,10 +164,10 @@ Set<int> set = {1, 2, 3};
 final lottoSet = <int>{1, 2, 3, 4};
 final loSet = {1, 2, 3};
 
-set.add
-(6);set.remove(1);
+set.add(6);
+set.remove(1);
 
-bool isContain = set.contains=(2);
+bool isContain = set.contains(2);
 
 ```
 
